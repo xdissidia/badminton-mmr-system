@@ -12,9 +12,38 @@
 
 <style>
     body {
-        font-family: "monospace" !important
+        font-family: "monospace";
+    }
+
+    div {
+        font-family: "monospace";
+    }
+
+    .superscript {
+        position: relative;
+        top: -2px;
+        font-size: 80%;
     }
 </style>
+@php
+
+    function autoPad($str, $n = 1)
+    {
+        $s = strlen($str);
+        if ($s > $n) {
+            $n = $s + 1;
+        }
+        $r = $str;
+        for ($i = $s; $i < $n; $i++) {
+            $r .= '&nbsp;';
+        }
+        return $r;
+    }
+    function newRating($player, $gp)
+    {
+        return $player->name . '<span class="superscript">' . ($gp->rating_deviation > 0 ? '+' . $gp->rating_deviation : $gp->rating_deviation) . '</span>';
+    }
+@endphp
 
 <body class="font-sans antialiased dark:bg-black dark:text-white/50">
     <div style="width: 100%; display: table;">
@@ -24,7 +53,6 @@
                 <br>
                 @foreach ($data['season']->events as $event)
                     <code><a href="{{ route('game.create') }}" class='create-game'>{{ $event->name }}</a></code>
-                    <br>
                     @php
                         $i = $event->games->count();
                     @endphp
@@ -44,7 +72,12 @@
                             $mp3 = $player3->name;
                             $mp4 = $player4->name;
 
-                            // $mp1 = $player1->name . ' ' . ($gp1->rating_deviation > 0 ? '+' . $gp1->rating_deviation : $gp1->rating_deviation);
+                            $mp1 = newRating($player1, $gp1);
+                            $mp2 = newRating($player2, $gp2);
+                            $mp3 = newRating($player3, $gp3);
+                            $mp4 = newRating($player4, $gp4);
+
+                            // $mp1 = $player1->name . '<span class="superscript"> ' . ($gp1->rating_deviation > 0 ? '' . $gp1->rating_deviation : $gp1->rating_deviation) . '</span>';
                             // $mp2 = $player2->name . ' ' . ($gp2->rating_deviation > 0 ? '+' . $gp2->rating_deviation : $gp2->rating_deviation);
                             // $mp3 = $player3->name . ' ' . ($gp3->rating_deviation > 0 ? '+' . $gp3->rating_deviation : $gp3->rating_deviation);
                             // $mp4 = $player4->name . ' ' . ($gp4->rating_deviation > 0 ? '+' . $gp4->rating_deviation : $gp4->rating_deviation);
@@ -53,15 +86,17 @@
                             // $mp3 = $player3->name . ' (' . $gp3->rating_deviation . ')';
                             // $mp4 = $player4->name . ' (' . $gp4->rating_deviation . ')';
 
-                            $match = '[ ' . $mp1 . ' x ' . $mp2 . ' ] DEFEATS [ ' . $mp3 . ' x ' . $mp4 . ' ]';
+                            $match = autoPad('[ ' . $mp1 . ' x ' . $mp2 . ' ]', 32) . ' DEFEATS ' . autoPad('[ ' . $mp3 . ' x ' . $mp4 . ' ]', 32);
+
+                            // $match =
+
                         @endphp
-                        <code>Game {!! str_pad($i--, 2, " ", STR_PAD_LEFT) !!} : {{ $match }}</code>
-                        <br>
+                        <div style="font-family: monospace"> Game <?php echo autoPad($i--, 2); ?> : {!! $match !!} </div>
                     @endforeach
                 @endforeach
             </div>
             <div style="display: table-cell;font-family: monospace;">
-                <code>Player Ratings</code><br>
+                <code>Season Ratings</code><br>
                 <table style=" text-align:center;">
                     <thead>
                         <tr>

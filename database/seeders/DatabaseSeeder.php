@@ -47,6 +47,11 @@ class DatabaseSeeder extends Seeder
         $this->createPlayer('Alvin');
         $this->createPlayer('Baby Jean');
 
+        // OTHERS
+        $this->createPlayer('ZB-Tores');
+        $this->createPlayer('ZB-Tipay');
+        $this->createPlayer('ZB-Gurl-1');
+
         $this->seedEvent1($season);
         // $season->events()->create([
         //     'name' => 'Dec 15, 2024',
@@ -72,7 +77,7 @@ class DatabaseSeeder extends Seeder
 
         $season->events()->create([
             'name' => 'Nov 23, 2024 (SMBC-SAT)',
-            'datetime' => now(),
+            'datetime' => 'Nov 23, 2024',
         ]);
         $this->createGame(['Ison', 'Lea', 'Ryza', 'Tatek']);
         $this->createGame(['Jay', 'Tatek', 'Carlo', 'Tino']);
@@ -87,7 +92,7 @@ class DatabaseSeeder extends Seeder
 
         $season->events()->create([
             'name' => 'Dec 5, 2024 (HyperSmash-THU)',
-            'datetime' => now(),
+            'datetime' => 'Dec 5, 2024',
         ]);
 
         $this->createGame(['Tatek', 'Pam', 'Xandro', 'Tamayo']);
@@ -99,7 +104,7 @@ class DatabaseSeeder extends Seeder
 
         $season->events()->create([
             'name' => 'Dec 8, 2024 (SMBC-SUN)',
-            'datetime' => now(),
+            'datetime' => 'Dec 8, 2024',
         ]);
 
         $this->createGame(['Ison', 'Enrico', 'Jay', 'Ryza']);
@@ -112,7 +117,7 @@ class DatabaseSeeder extends Seeder
 
         $season->events()->create([
             'name' => 'Dec 14, 2024 (SMBC-SUN)',
-            'datetime' => now(),
+            'datetime' => 'Dec 14, 2024',
         ]);
 
         $this->createGame(['Ison', 'Erica', 'Carlo', 'Enrico']);
@@ -129,6 +134,19 @@ class DatabaseSeeder extends Seeder
         $this->createGame(['Jay', 'Tatek', 'Ison', 'Tino']);
         $this->createGame(['Ison', 'Erica', 'Tatek', 'Pam']);
         $this->createGame(['Ison', 'Ryza', 'Tatek', 'Tino']);
+
+        $season->events()->create([
+            'name' => 'Jan 2, 2025 (ZB-THU)',
+            'datetime' => 'Jan 2, 2025',
+        ]);
+
+        $this->createGame(['Jay', 'Alvin', 'Carlo', 'Ison']);
+        $this->createGame(['Ison', 'Jay', 'Alvin', 'Xandro']);
+        $this->createGame(['Ison', 'Carlo', 'ZB-Tores', 'ZB-Tipay']);
+        $this->createGame(['Alvin', 'ZB-Gurl-1', 'Xandro', 'Erica']);
+        $this->createGame(['Alvin', 'Xandro', 'Carlo', 'Jay']);
+        $this->createGame(['Alvin', 'Ison', 'Jay', 'Xandro']);
+        $this->createGame(['Jay', 'Xandro', 'Carlo', 'Alvin']);
     }
 
     private function createGame($players)
