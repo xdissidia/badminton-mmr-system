@@ -1,0 +1,19 @@
+services:
+  badminton-stats:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: PAGASA-BADMINTON-STATS
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8081:80"
+    environment:
+      - API_PUBLIC_PATH=/var/www/html/public
+      - API_LOG_PATH=/var/www/html/storage/logs
+
+networks:
+    default:
+        external: true
+        name: docker-network
+
