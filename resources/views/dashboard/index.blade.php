@@ -39,9 +39,10 @@
         }
         return $r;
     }
-    function newRating($player, $gp)
+    function newRating($player, $gp, $win = true)
     {
-        return $player->name . '<span class="superscript">' . ($gp->rating_deviation > 0 ? '+' . $gp->rating_deviation : $gp->rating_deviation) . '</span>';
+        $win_color = $win ? 'style="color:green"' : 'style="color:red"';
+        return $player->name . '<span class="superscript" ' . $win_color . '>' . ($gp->rating_deviation > 0 ? '+' . $gp->rating_deviation : $gp->rating_deviation) . '</span>';
     }
 @endphp
 
@@ -52,47 +53,47 @@
                 <code><a href="#" class='create-event'>{{ $data['season']->name }}</a></code>
                 <br>
                 @foreach ($data['season']->events as $event)
-                    <code><a href="{{ route('game.create') }}" class='create-game'>{{ $event->name }}</a></code>
-                    @php
-                        $i = $event->games->count();
-                    @endphp
-                    @foreach ($event->games as $game)
-                        @php
-                            $gp1 = $game->players->firstWhere('player_number', 1);
-                            $gp2 = $game->players->firstWhere('player_number', 2);
-                            $gp3 = $game->players->firstWhere('player_number', 3);
-                            $gp4 = $game->players->firstWhere('player_number', 4);
-                            $player1 = $data['players']->firstWhere('id', $gp1->player_id);
-                            $player2 = $data['players']->firstWhere('id', $gp2->player_id);
-                            $player3 = $data['players']->firstWhere('id', $gp3->player_id);
-                            $player4 = $data['players']->firstWhere('id', $gp4->player_id);
+                                <code><a href="{{ route('game.create') }}" class='create-game'>{{ $event->name }}</a></code>
+                                @php
+                                    $i = $event->games->count();
+                                @endphp
+                                @foreach ($event->games as $game)
+                                            @php
+                                                $gp1 = $game->players->firstWhere('player_number', 1);
+                                                $gp2 = $game->players->firstWhere('player_number', 2);
+                                                $gp3 = $game->players->firstWhere('player_number', 3);
+                                                $gp4 = $game->players->firstWhere('player_number', 4);
+                                                $player1 = $data['players']->firstWhere('id', $gp1->player_id);
+                                                $player2 = $data['players']->firstWhere('id', $gp2->player_id);
+                                                $player3 = $data['players']->firstWhere('id', $gp3->player_id);
+                                                $player4 = $data['players']->firstWhere('id', $gp4->player_id);
 
-                            $mp1 = $player1->name;
-                            $mp2 = $player2->name;
-                            $mp3 = $player3->name;
-                            $mp4 = $player4->name;
+                                                $mp1 = $player1->name;
+                                                $mp2 = $player2->name;
+                                                $mp3 = $player3->name;
+                                                $mp4 = $player4->name;
 
-                            $mp1 = newRating($player1, $gp1);
-                            $mp2 = newRating($player2, $gp2);
-                            $mp3 = newRating($player3, $gp3);
-                            $mp4 = newRating($player4, $gp4);
+                                                $mp1 = newRating($player1, $gp1, 1);
+                                                $mp2 = newRating($player2, $gp2, 1);
+                                                $mp3 = newRating($player3, $gp3, 0);
+                                                $mp4 = newRating($player4, $gp4, 0);
 
-                            // $mp1 = $player1->name . '<span class="superscript"> ' . ($gp1->rating_deviation > 0 ? '' . $gp1->rating_deviation : $gp1->rating_deviation) . '</span>';
-                            // $mp2 = $player2->name . ' ' . ($gp2->rating_deviation > 0 ? '+' . $gp2->rating_deviation : $gp2->rating_deviation);
-                            // $mp3 = $player3->name . ' ' . ($gp3->rating_deviation > 0 ? '+' . $gp3->rating_deviation : $gp3->rating_deviation);
-                            // $mp4 = $player4->name . ' ' . ($gp4->rating_deviation > 0 ? '+' . $gp4->rating_deviation : $gp4->rating_deviation);
+                                                // $mp1 = $player1->name . '<span class="superscript"> ' . ($gp1->rating_deviation > 0 ? '' . $gp1->rating_deviation : $gp1->rating_deviation) . '</span>';
+                                                // $mp2 = $player2->name . ' ' . ($gp2->rating_deviation > 0 ? '+' . $gp2->rating_deviation : $gp2->rating_deviation);
+                                                // $mp3 = $player3->name . ' ' . ($gp3->rating_deviation > 0 ? '+' . $gp3->rating_deviation : $gp3->rating_deviation);
+                                                // $mp4 = $player4->name . ' ' . ($gp4->rating_deviation > 0 ? '+' . $gp4->rating_deviation : $gp4->rating_deviation);
 
-                            // $mp2 = $player2->name . ' (' . $gp2->rating_deviation . ')';
-                            // $mp3 = $player3->name . ' (' . $gp3->rating_deviation . ')';
-                            // $mp4 = $player4->name . ' (' . $gp4->rating_deviation . ')';
+                                                // $mp2 = $player2->name . ' (' . $gp2->rating_deviation . ')';
+                                                // $mp3 = $player3->name . ' (' . $gp3->rating_deviation . ')';
+                                                // $mp4 = $player4->name . ' (' . $gp4->rating_deviation . ')';
 
-                            $match = autoPad('[ ' . $mp1 . ' x ' . $mp2 . ' ]', 32) . ' DEFEATS ' . autoPad('[ ' . $mp3 . ' x ' . $mp4 . ' ]', 32);
+                                                $match = autoPad('[ ' . $mp1 . ' x ' . $mp2 . ' ]', 32) . ' DEFEATS ' . autoPad('[ ' . $mp3 . ' x ' . $mp4 . ' ]', 32);
 
-                            // $match =
+                                                // $match =
 
-                        @endphp
-                        <div style="font-family: monospace"> Game <?php echo autoPad($i--, 2); ?> : {!! $match !!} </div>
-                    @endforeach
+                                            @endphp
+                                            <div style="font-family: monospace"> Game <?php        echo autoPad($i--, 2); ?> : {!! $match !!} </div>
+                                @endforeach
                 @endforeach
             </div>
             <div style="display: table-cell;font-family: monospace;">
@@ -112,16 +113,16 @@
                             $i = 1;
                         @endphp
                         @foreach ($data['players'] as $player)
-                            @php
-                                $gp = App\Models\GamePlayer::wherePlayerId($player->id)->get();
-                            @endphp
-                            <tr>
-                                <td>{{ $i++ }}</td>
-                                <td> {{ $player->name }}</td>
-                                <td style="text-align:right;"> {{ @$player->rating->value }}</td>
-                                <td> {{ $gp->where('result', 'Win')->count() }}</td>
-                                <td> {{ $gp->where('result', 'Lose')->count() }}</td>
-                            </tr>
+                                                @php
+                                                    $gp = App\Models\GamePlayer::wherePlayerId($player->id)->get();
+                                                @endphp
+                                                <tr>
+                                                    <td>{{ $i++ }}</td>
+                                                    <td> {{ $player->name }}</td>
+                                                    <td style="text-align:right;"> {{ @$player->rating->value }}</td>
+                                                    <td> {{ $gp->where('result', 'Win')->count() }}</td>
+                                                    <td> {{ $gp->where('result', 'Lose')->count() }}</td>
+                                                </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -139,12 +140,12 @@
         }
     });
 
-    $('.create-event').click(function() {
+    $('.create-event').click(function () {
         let event_name = prompt("Event Name : ");
         if (event_name != null) {
             $.post(`{{ route('season.event.create') }}`, {
                 event_name: event_name
-            }).done(function(data) {
+            }).done(function (data) {
                 console.log(data);
             })
         }
