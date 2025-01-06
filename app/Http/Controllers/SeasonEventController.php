@@ -10,7 +10,8 @@ class SeasonEventController extends Controller
 {
     public function eventCreate(Request $request)
     {
-        $season = Season::first();
+        
+        $season = Season::where('name', $request->season)->first();
         $event = new SeasonEvent;
         $event->season()->associate($season);
         $event->name = $request->event_name;

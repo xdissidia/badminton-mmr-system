@@ -18,6 +18,11 @@ class DatabaseSeeder extends Seeder
         $season = new Season;
         $season->name = "Season 1";
         $season->save();
+
+        $season = new Season;
+        $season->name = "Season 2";
+        $season->save();
+
         // GULOD 1
         $this->createPlayer('Jay');
         $this->createPlayer('May');
@@ -52,6 +57,7 @@ class DatabaseSeeder extends Seeder
         $this->createPlayer('ZB-Tipay');
         $this->createPlayer('ZB-Gurl-1');
 
+        $season = Season::find(1);
         $this->seedEvent1($season);
         // $season->events()->create([
         //     'name' => 'Dec 15, 2024',
@@ -155,6 +161,7 @@ class DatabaseSeeder extends Seeder
         $gc = new GameController;
         request()->merge([
             'players' => $this->getPlayers($players),
+            'season' => 'Season 1'
         ]);
         $gc->store(request());
     }

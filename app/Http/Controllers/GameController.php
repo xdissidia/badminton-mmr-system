@@ -28,58 +28,85 @@ class GameController extends Controller
     public function store(Request $request)
     {
         $season = 1;
+        $season = Season::where('name', $request->season)->first();
+        $season = $season->id;
         $event = SeasonEvent::get()->last();
-
         $game = new EventGame;
         $game->season()->associate($season);
         $game->event()->associate($event);
         $game->save();
+        $p1 = Player::with([
+            'rating' => function ($q) use ($season) {
+                $q->where('season_id', $season);
+            }
+        ])->whereId($request->players[0])->first();
+        $p2 = Player::with([
+            'rating' => function ($q) use ($season) {
+                $q->where('season_id', $season);
+            }
+        ])->whereId($request->players[1])->first();
+        $p3 = Player::with([
+            'rating' => function ($q) use ($season) {
+                $q->where('season_id', $season);
+            }
+        ])->whereId($request->players[2])->first();
+        $p4 = Player::with([
+            'rating' => function ($q) use ($season) {
+                $q->where('season_id', $season);
+            }
+        ])->whereId($request->players[3])->first();
 
-        $p1 = Player::with('rating')->whereId($request->players[0])->first();
-        $p2 = Player::with('rating')->whereId($request->players[1])->first();
-        $p3 = Player::with('rating')->whereId($request->players[2])->first();
-        $p4 = Player::with('rating')->whereId($request->players[3])->first();
-
+        // dd($p1->toArray(),$p2->toArray(),$p3->toArray(),$p4->toArray());
         $gp1 = $this->addPlayer($season, $game, $p1, 1, 1);
         $gp2 = $this->addPlayer($season, $game, $p2, 2, 1);
         $gp3 = $this->addPlayer($season, $game, $p3, 3, 2);
         $gp4 = $this->addPlayer($season, $game, $p4, 4, 2);
 
+        // dd($gp1, $gp2, $gp3, $gp4);
         $ratings = $this->calculateRating($p1, $p2, $p3, $p4);
         $r1 = $this->getPlayerRating($ratings, 0);
         $r2 = $this->getPlayerRating($ratings, 1);
         $r3 = $this->getPlayerRating($ratings, 2);
         $r4 = $this->getPlayerRating($ratings, 3);
+        
         $gp1->update([
             'rating_updated' => $r1['value'],
             'rating_deviation' => $r1['value'] - $gp1->rating_current,
         ]);
+
         $gp2->update([
             'rating_updated' => $r2['value'],
             'rating_deviation' => $r2['value'] - $gp2->rating_current,
         ]);
+
         $gp3->update([
             'rating_updated' => $r3['value'],
             'rating_deviation' => $r3['value'] - $gp3->rating_current,
         ]);
+
         $gp4->update([
             'rating_updated' => $r4['value'],
             'rating_deviation' => $r4['value'] - $gp4->rating_current,
         ]);
+
         SeasonPlayerRating::updateOrCreate([
-            'season_id' => 1,
+            'season_id' => $season,
             'player_id' => $p1->id,
         ], $r1)->history()->create($r1);
+
         SeasonPlayerRating::updateOrCreate([
-            'season_id' => 1, 'player_id' => $p2->id,
+            'season_id' => $season,
+            'player_id' => $p2->id,
         ], $r2)->history()->create($r2);
 
         SeasonPlayerRating::updateOrCreate([
-            'season_id' => 1, 'player_id' => $p3->id,
+            'season_id' => $season,
+            'player_id' => $p3->id,
         ], $r3)->history()->create($r3);
 
         SeasonPlayerRating::updateOrCreate([
-            'season_id' => 1, 'player_id' => $p4->id,
+            'season_id' => $season,
+            'player_id' => $p4->id,
         ], $r4)->history()->create($r4);
 
     }

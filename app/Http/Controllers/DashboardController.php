@@ -11,13 +11,26 @@ class DashboardController extends Controller
     public function index()
     {
 
+        $season = 'Season 1';
+        if (request()->has('season')) {
+            $season = request()->season;
+        }
+
         $data = [
-            'season' => Season::with(['events' => function ($q) {
-                $q->orderBy('id', 'desc');
-            }, 'events.games' => function ($q) {
-                $q->with('players')->orderBy('id', 'desc');
-            }])->first(),
-            'players' => Player::with('ratings')->get()->sortByDesc('rating.value'),
+            'season' => Season::with([
+                'events' => function ($q) {
+                    $q->orderBy('id', 'desc');
+                },
+                'events.games' => function ($q) {
+                    $q->with('players')->orderBy('id', 'desc');
+                }
+            ])->where('name', $season)->first(),
+            'players' => Player::with([
+                'rating' => function ($q) use ($season) {
+                    $s = Season::whereName($season)->first();
+                    $q->where('season_id', $s->id);
+                }
+            ])->get()->sortByDesc('rating.value'),
         ];
 
         return view('dashboard.index', compact('data'));

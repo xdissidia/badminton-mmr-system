@@ -45,17 +45,18 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    $('.create-game').click(function() {
+    $('.create-game').click(function () {
         let players = [
             $('.player1').val(),
             $('.player2').val(),
             $('.player3').val(),
             $('.player4').val(),
         ]
-        $.post(`{{ route('game.create') }}`, {
-            players: players
-        }).done(function(data) {
-            window.location = "/";
+        $.post(`{{ route('game.store') }}`, {
+            players: players,
+            season: `{{ request()->season }}`
+        }).done(function (data) {
+            window.location = "/?season={{ request()->season }}";
         })
     });
 </script>
