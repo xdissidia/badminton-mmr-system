@@ -31,6 +31,7 @@ class DashboardController extends Controller
                     $q->where('season_id', $s->id);
                 }
             ])->get()->sortByDesc('rating.value'),
+            'seasons' => Season::get(),
         ];
 
         return view('dashboard.index', compact('data'));
