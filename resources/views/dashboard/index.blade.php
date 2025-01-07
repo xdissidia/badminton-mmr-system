@@ -46,7 +46,7 @@
     }
 
     $season = 'Season 1';
-    if(request()->has('season')){
+    if (request()->has('season')) {
         $season = request()->season;
     }
 @endphp
@@ -59,7 +59,7 @@
                 <br>
                 @if(isset($data['season']))
                             @foreach ($data['season']->events as $event)
-                                        <code><a href="{{ route('game.store','season=' . $season) }}" class='create-game'>{{ $event->name }}</a></code>
+                                        <code><a href="{{ route('game.store', 'season=' . $season) }}" class='create-game'>{{ $event->name }}</a></code>
                                         @php
                                             $i = $event->games->count();
                                         @endphp
@@ -125,6 +125,8 @@
                                                     $season = $data['season'];
                                                     $gp = App\Models\GamePlayer::wherePlayerId($player->id)->where('season_id', @$season->id)->get();
                                                     $rating = $player->rating()->where('season_id', @$season->id)->first();
+                                                    if (!@$rating->value)
+                                                        continue;
                                                 @endphp
                                                 <tr>
                                                     <td>{{ $i++ }}</td>
