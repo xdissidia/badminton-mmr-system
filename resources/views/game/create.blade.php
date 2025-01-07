@@ -12,25 +12,24 @@
 
 <body class="font-sans antialiased dark:bg-black dark:text-white/50">
 
-    <select class="player1">
-        @foreach ($data['players'] as $player)
+    <select class="player1" size="25">
+        @foreach ($data['players']->sortBy('name') as $player)
             <option value="{{ $player->id }}">{{ $player->name }}</option>
         @endforeach
     </select>
-    <select class="player2">
-        @foreach ($data['players'] as $player)
+    <select class="player2" size="25">
+        @foreach ($data['players']->sortBy('name') as $player)
             <option value="{{ $player->id }}">{{ $player->name }}</option>
         @endforeach
     </select>
-
     VS
-    <select class="player3">
-        @foreach ($data['players'] as $player)
+    <select class="player3" size="25">
+        @foreach ($data['players']->sortBy('name') as $player)
             <option value="{{ $player->id }}">{{ $player->name }}</option>
         @endforeach
     </select>
-    <select class="player4">
-        @foreach ($data['players'] as $player)
+    <select class="player4" size="25">
+        @foreach ($data['players']->sortBy('name') as $player)
             <option value="{{ $player->id }}">{{ $player->name }}</option>
         @endforeach
     </select>
