@@ -36,9 +36,9 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN composer install --no-interaction --optimize-autoloader
-
 RUN chown -R www-data:www-data storage bootstrap/cache
+
+RUN composer install --no-interaction --optimize-autoloader
 
 EXPOSE 80
 

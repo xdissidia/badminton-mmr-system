@@ -10,15 +10,6 @@ use Illuminate\Support\Facades\Log;
 class DashboardController extends Controller
 {
 
-    use MatchMaker;
-
-    public function matchMaker()
-    {
-        $ps = Player::get();
-        $ps = $ps->random(6);
-        return $this->getMatches($ps->pluck('name'));
-    }
-
     public function index()
     {
 
