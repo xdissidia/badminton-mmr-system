@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if (config('app.name') == 'stats-badminton-ict' && config('app.env') == 'production') {
             $this->app->resolving(UrlGenerator::class, function (UrlGenerator $generator) {
-                $generator->forceRootUrl(env('APP_URL'));
+                $generator->forceRootUrl(config('app.url'));
             });
         }
     }
