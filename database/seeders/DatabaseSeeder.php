@@ -51,6 +51,13 @@ class DatabaseSeeder extends Seeder
         $this->createPlayer('Lery');
         $this->createPlayer('Alvin');
         $this->createPlayer('Baby Jean');
+        $this->createPlayer('Mac');
+        $this->createPlayer('Daniel');
+        $this->createPlayer('Edward');
+        $this->createPlayer('Ella');
+        $this->createPlayer('Will');
+        $this->createPlayer('Joy');
+        $this->createPlayer('JM');
 
         // OTHERS
         $this->createPlayer('ZB-Tores');
